@@ -1,0 +1,1 @@
+earthquake_magnitudes filter=lfs diff=lfs merge=lfs -text
