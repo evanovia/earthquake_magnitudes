@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seismic Waveform Magnitude Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Prediksi Magnitudo dengan Gelombang Seismik</h1>
+            <p>Menganalisis 2000 Gelombang Seismik dari Stanford Earthquake Dataset (STEAD)</p>
+        </div>
+    </header>
+    <div class="content-wrapper">
+        <aside class="sidebar">
+            <div class="info-section">
+                <h2>Bagaimana Gambar Seismogram Memprediksi Magnitudo?</h2>
+                <div class="info-content">
+                    <div class="info-box">
+                        <h3 style="color: #f3f7bc">P-arrival dan S-arrival</h3>
+                        <p style="color: #0ef">Garis biru dan merah menunjukkan waktu kedatangan gelombang P dan S, digunakan untuk menghitung jarak episentral gempa.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3 style="color: #f3f7bc">Coda End</h3>
+                        <p style="color: #0ef">Garis biru muda menunjukkan akhir coda, yang memberikan informasi tentang durasi dan intensitas gempa.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3 style="color: #f3f7bc">Amplitudo</h3>
+                        <p style="color: #0ef">Amplitudo gelombang seismik digunakan untuk mengukur energi yang dilepaskan. Semakin besar amplitudo, semakin besar magnitudo gempa.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <div class="container">
+                <form action="/" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept="image/*" required>
+                    <button type="submit">Unggah dan Prediksi</button>
+                </form>
+                {% if prediction %}
+                    <div class="result">
+                        <h1>Prediksi Magnitudo: {{ prediction }}</h1>
+                        <h2 style="color: #75ffe6">Magnitudo Asli: {{ actual_magnitude }}</h2>
+                        <h2 style="color: #75ffe6">Akurasi: 91.60%</h2>
+                        <img src="data:image/jpeg;base64,{{ img_data }}" alt="Uploaded Image">
+                        <form action="{{ url_for('download_pdf', predicted_magnitude=prediction, actual_magnitude=actual_magnitude) }}" method="post">
+                            <input type="hidden" name="img_data" value="{{ img_data }}">
+                            <button class="download-btn">Unduh Hasil Prediksi</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+    <footer>
+        <div class="footer-container">
+            <p>Copyright &copy; 2024 Eva Novia Manik</p>
+        </div>
+    </footer>
+</body>
+</html>
